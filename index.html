@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="zh-Hans">
+<html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -96,7 +96,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Muse',
+    scheme: 'Pisces',
     version: '5.1.4',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
@@ -160,7 +160,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle">Evolution</p>
+        <p class="site-subtitle">Evolutionary Biology, Bioinformatics</p>
       
   </div>
 
@@ -190,52 +190,12 @@
         </li>
       
         
-        <li class="menu-item menu-item-about">
-          <a href="/about/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
-            
-            关于
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            标签
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
-            
-            分类
-          </a>
-        </li>
-      
-        
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             归档
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-search">
-          <a href="/search/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-search"></i> <br />
-            
-            搜索
           </a>
         </li>
       
@@ -272,12 +232,139 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yihenghu.github.io/2018/09/12/vcftools的使用总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yi-heng Hu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yi-heng Hu | 胡昳恒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/12/vcftools的使用总结/" itemprop="url">vcftools的使用总结</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-12T23:10:57+08:00">
+                2018-09-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近由于要处理一批vcf文件，可能会对vcf文件操作的多一点，特此记录下关于vcftools软件操作vcf文件的一些命令及技巧</p>
+<h4 id="从样本中批量提取目标样本"><a href="#从样本中批量提取目标样本" class="headerlink" title="从样本中批量提取目标样本"></a>从样本中批量提取目标样本</h4><p><code>vcftools --gzvcf input.vcf.gz --keep sample.txt --recode --stdout | gzip -c &gt; output.vcf.gz</code></p>
+<p>注：</p>
+<p>–vcf 输入的是未压缩的vcf文件</p>
+<p>–gzvcf 输入的是压缩后的vcf文件</p>
+<h4 id="在群体遗传学中，遗传多样性参数是衡量群体遗传多样性的重要指标，比如Fst、π、Tajima’s-D等。"><a href="#在群体遗传学中，遗传多样性参数是衡量群体遗传多样性的重要指标，比如Fst、π、Tajima’s-D等。" class="headerlink" title="在群体遗传学中，遗传多样性参数是衡量群体遗传多样性的重要指标，比如Fst、π、Tajima’s D等。"></a>在群体遗传学中，遗传多样性参数是衡量群体遗传多样性的重要指标，比如Fst、π、Tajima’s D等。</h4><p><strong>1、Fst计算</strong></p>
+<p>Fst是衡量群体间分化程度的重要参数，Fst越大，表明群体分化程度越高，受选择程度越高。基于Fst可以进行选择性消除分析。</p>
+<h6 id="计算两个群体间fst值，pop1-txt和pop2-txt是包含了各群体的样品名"><a href="#计算两个群体间fst值，pop1-txt和pop2-txt是包含了各群体的样品名" class="headerlink" title="计算两个群体间fst值，pop1.txt和pop2.txt是包含了各群体的样品名"></a>计算两个群体间fst值，pop1.txt和pop2.txt是包含了各群体的样品名</h6><p><code>vcftools --gvcf input.vcf.gz --weir-fst-pop pop1.txt --weir-fst-pop pop1.txt --fst-window-size 200000 --fst-window-step 100000 --out output.window.fst</code> </p>
+<h4 id="参考资料："><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h4><h6 id="美吉生物https-mp-weixin-qq-com-s-TsaAB-QCC96QuPn1QXKTOA"><a href="#美吉生物https-mp-weixin-qq-com-s-TsaAB-QCC96QuPn1QXKTOA" class="headerlink" title="美吉生物https://mp.weixin.qq.com/s/TsaAB_QCC96QuPn1QXKTOA"></a>美吉生物<a href="https://mp.weixin.qq.com/s/TsaAB_QCC96QuPn1QXKTOA" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/TsaAB_QCC96QuPn1QXKTOA</a></h6><h6 id="生信百科https-mp-weixin-qq-com-s-Ar4I33z9UhMSP-Bi86XJyw"><a href="#生信百科https-mp-weixin-qq-com-s-Ar4I33z9UhMSP-Bi86XJyw" class="headerlink" title="生信百科https://mp.weixin.qq.com/s/Ar4I33z9UhMSP-Bi86XJyw"></a>生信百科<a href="https://mp.weixin.qq.com/s/Ar4I33z9UhMSP-Bi86XJyw" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/Ar4I33z9UhMSP-Bi86XJyw</a></h6>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://yihenghu.github.io/2018/09/12/test/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yi-heng Hu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/YihengHu.jpg">
+      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -396,7 +483,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yi-heng Hu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/YihengHu.jpg">
+      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -516,7 +603,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yi-heng Hu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/YihengHu.jpg">
+      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -636,7 +723,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yi-heng Hu">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/YihengHu.jpg">
+      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -781,10 +868,6 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
-              <img class="site-author-image" itemprop="image"
-                src="/images/YihengHu.jpg"
-                alt="Yi-heng Hu" />
-            
               <p class="site-author-name" itemprop="name">Yi-heng Hu</p>
               <p class="site-description motion-element" itemprop="description">The biggest adventure you can take is to live the life of your dreams.</p>
           </div>
@@ -796,7 +879,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -804,6 +887,15 @@
 
             
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
             
 
           </nav>
@@ -855,7 +947,7 @@
 
 
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
 
 
 
@@ -954,6 +1046,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
 
   
 
